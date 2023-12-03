@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming Platform</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <script>
+        function setCategory(category) {
+            document.getElementById('categoryInput').value = category;
+            document.getElementById('categoryForm').submit();
+        }
+    </script>
+</head>
+
+<body>
+    <header class="banner">
+        <div class="banner__contents">
+            <h1 class="banner__title">Explore the Cinematic World </h1>
+            <button class="banner__button">About Us</button>
+        </div>
+        <div class="banner--fadeBottom"></div>
+    </header>
+
+
+    
+    <div class="row">
+        <h2 style="text-transform: uppercase; padding: 10px;">
+            {% if not category_filter or category_filter == 'All' %}
+                Movie Genres
+            {% else %}
+                {{ category_filter }}
+            {% endif %}
+        </h2>
+        <form id="categoryForm" method="get" action="/">
+            <input type="hidden" name="category" id="categoryInput" value="">
+            <button class="categoryButton all" type="button" onclick="setCategory('All')">All</button>
+            <button class="categoryButton action" type="button" onclick="setCategory('action')">Action</button>
+            <button class="categoryButton comedy" type="button" onclick="setCategory('comedy')">Comedy</button>
+            <button class="categoryButton drama" type="button" onclick="setCategory('drama')">Drama</button>
+            <button class="categoryButton sci-fi" type="button" onclick="setCategory('sci-fi')">Science Fiction</button>
+            <button class="categoryButton horror" type="button" onclick="setCategory('horror')">Horror</button>
+        </form>
+        
+        {% if mv %}
+        <div class="row__posters">
+            {% for movie_set in mv %}
+                <a href="video/{{ movie_set.id }}" class="video-card">
+                    <img class="row__poster row__posterLarge" src="{{ movie_set.poster.url }}" alt="{{ movie_set.altText }}">
+
+                    <h5 class="moviename">{{ movie_set.title }}</h5>
+                </a>
+
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No movies in the selected category.</p>
+    {% endif %}
+    </div>
+</body>
+
+</html>
